@@ -10,6 +10,26 @@ size_t	ft_strlen(char const *s)
 	return (index);
 }
 
+char	*ft_strdup(const char *s1)
+{
+	char	*cpy;
+	size_t	len;
+	size_t	i;
+
+	len = ft_strlen(s1);
+	cpy = (char *)malloc(sizeof(char) * (len + 1));
+	if (!cpy)
+		return (NULL);
+	i = 0;
+	while (i < len)
+	{
+		cpy[i] = s1[i];
+		i++;
+	}
+	cpy[i] = '\0';
+	return (cpy);
+}
+
 char	*ft_strjoin(char const *s1, char const *s2)
 {
 	char	*str;
@@ -37,26 +57,6 @@ char	*ft_strjoin(char const *s1, char const *s2)
 	}
 	str[i] = '\0';
 	return (str);
-}
-
-char	*ft_strdup(const char *s1)
-{
-	char	*cpy;
-	size_t	len;
-	size_t	i;
-
-	len = ft_strlen(s1);
-	cpy = (char *)malloc(sizeof(char) * (len + 1));
-	if (!cpy)
-		return (NULL);
-	i = 0;
-	while (i < len)
-	{
-		cpy[i] = s1[i];
-		i++;
-	}
-	cpy[i] = '\0';
-	return (cpy);
 }
 
 char	*ft_strchr(const char *s, int c)
