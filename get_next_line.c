@@ -17,22 +17,29 @@ static char	*join_and_free(char **line, char *buf)
 	return (output);
 }
 
+// '\n''\0'
+
 static char	*process_output(char **line)	//여기에 넘어온 문자열은 무조건 '\n'을 가지고 있음.
 {
 	char	*output;
 	char	*backup;
 
-	printf("line : %s$\n", *line);
+	//printf("line : %s$\n", *line);
 	backup = ft_strchr(*line, '\n');
-	printf("backup : %s\n", backup);
-	printf("이게안걸린다고?\n");
-	if (backup == NULL)
+	//printf("backup : %s\n", backup);
+	//printf("이게안걸린다고?\n");
+	if (backup == NULL)	//마지막인데 아에없이 끝나는경우랑 하나 있이 끝나는경우
 	{	
-		output = ft_strdup(*line);
-		printf("---> (%s)\n", output);
-		free(*line);	//문제발생
-		printf("outputttoutputto\n");
-		return (output);
+		// if (ft_strlen(*line) != 0)
+		// {
+		// 	output = ft_strdup(*line);
+		// 	printf("---> (%s)\n", output);
+		// 	free(*line);	//문제발생
+		// 	//printf("outputttoutputto\n");
+		// 	return (output);
+		// }
+		//printf("---> (%s)\n", *line);
+		return (NULL);
 	}
 	backup[0] = '\0';
 	output = ft_strdup(*line);
@@ -45,7 +52,7 @@ static char	*process_output(char **line)	//여기에 넘어온 문자열은 무�
 		return (NULL);
 	}
 	*line = backup;
-	printf("[ part 1 ]\n%s\n[ part2 ]\n%s\n", output, backup);
+	//printf("[ part 1 ]\n%s\n[ part2 ]\n%s\n", output, backup);
 	return (output);
 }
 
@@ -57,12 +64,12 @@ char		*get_next_line(int fd)
 	int			read_size;
 
 	*buf = '\0';
-	printf("lines : %s\nbuffer : %s\n", line, buf);
+	//printf("lines : %s\nbuffer : %s\n", line, buf);
 	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
 	if (!(line && ft_strchr(line, '\n')))
 	{
-		printf("HERE\n");
+		//printf("HERE\n");
 		while ((read_size = read(fd ,buf ,BUFFER_SIZE)) > 0)
 		{
 			if (read_size == -1)
@@ -99,7 +106,7 @@ int main()
 	while ((str = get_next_line(fd)))
 	{
 		printf("---------------------------\n");
-		printf("main : %s\n", str);
+		printf("main : $%s$\n", str);
 		free(str);
 		printf("---------------------------\n");
 	}
