@@ -22,10 +22,21 @@ static char	*process_output(char **line)	//여기에 넘어온 문자열은 무�
 	char	*output;
 	char	*backup;
 
+	printf("line : %s$\n", *line);
 	backup = ft_strchr(*line, '\n');
+	printf("backup : %s\n", backup);
+	printf("이게안걸린다고?\n");
+	if (backup == NULL)
+	{	
+		output = ft_strdup(*line);
+		printf("---> (%s)\n", output);
+		free(*line);	//문제발생
+		printf("outputttoutputto\n");
+		return (output);
+	}
 	backup[0] = '\0';
-	backup = ft_strdup(backup + 1);
 	output = ft_strdup(*line);
+	backup = ft_strdup(backup + 1);
 	free(*line);
 	if (!backup || !output)	//둘 중 하나만 NULL인데 이렇게 해도되는지
 	{
@@ -50,6 +61,8 @@ char		*get_next_line(int fd)
 	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
 	if (!(line && ft_strchr(line, '\n')))
+	{
+		printf("HERE\n");
 		while ((read_size = read(fd ,buf ,BUFFER_SIZE)) > 0)
 		{
 			if (read_size == -1)
@@ -61,7 +74,7 @@ char		*get_next_line(int fd)
 			if (!line)
 				return (NULL);
 		}
-	else if (*buf == '\0')
+	}
 	output = process_output(&line);
 	return (output);
 }
