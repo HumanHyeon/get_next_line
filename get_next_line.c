@@ -63,39 +63,30 @@ char		*get_next_line(int fd)
 	char		buf[BUFFER_SIZE + 1];
 	int			read_size;
 
-	// printf("HERE\n");
-	// printf("line : %s$\n", line);
 	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
 	if (!line)
 	{
-		read_size = read(fd ,buf ,BUFFER_SIZE);	//읽을 것도 없고 기존 것도 없음 끝내야함.
-		if (read_size <= 0)
-			return (NULL);
-		buf[read_size] = '\0';
-		line = ft_strdup(buf);
+		line = ft_strdup("");
 		if (!line)
 			return (NULL);
 	}
 	while (ft_strchr(line, '\n') == NULL)
 	{
-		if (line[0] == '\0')
-		{
-			free(line);
-			return (NULL);
-		}
+		printf("line : %s\n", line);
 		read_size = read(fd ,buf ,BUFFER_SIZE);
 		if (read_size == -1)
 			return (NULL);
 		if (read_size == 0)
 		{
+			if (ft_strlen(line) == 0)
+				return (NULL);
 			output = ft_strdup(line);
 			free(line);
 			printf("여기서 리턴\n");
 			return (output);
 			//printf("read_size = %d\n", read_size);
 			//printf("%s\n", line);
-			//return (NULL);
 		}
 		buf[read_size] = '\0';
 		line = join_and_free(&line, buf);
@@ -104,11 +95,6 @@ char		*get_next_line(int fd)
 	}
 	//printf("%s\n", line);
 	output = process_output(&line);
-	if (output[0] == '\0')
-	{
-		free(line);
-		return (NULL);
-	}
 	printf("output :%s\n", output);
 	return (output);
 }
@@ -132,5 +118,6 @@ int main()
 		printf("---------------------------\n");
 		printf("진입\n");		
 	}
+	system("leaks a.out");
 	close (fd);
 }
