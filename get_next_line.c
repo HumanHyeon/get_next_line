@@ -63,34 +63,40 @@ char		*get_next_line(int fd)
 	char		buf[BUFFER_SIZE + 1];
 	int			read_size;
 
-	*buf = '\0';
-	//printf("lines : %s\nbuffer : %s\n", line, buf);
 	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
-	if (!(line && ft_strchr(line, '\n')))
+	if (!line)
 	{
-		//printf("HERE\n");
-		while ((read_size = read(fd ,buf ,BUFFER_SIZE)) > 0)
-		{
-			if (read_size == -1)
-				return (NULL);
-			buf[read_size] = '\0';
-			if (ft_strchr(buf, '\n') == NULL)
-				break;
-			line = join_and_free(&line, buf);
-			if (!line)
-				return (NULL);
-		}
+		line = ft_strdup("");
+		if (!line)
+			return (NULL);
 	}
+	while (ft_strchr(line, '\n') == NULL)
+	{
+		read_size = read(fd ,buf ,BUFFER_SIZE);
+		if (read_size == -1)
+			return (NULL);
+		if (read_size == 0)
+		{
+			if (line)
+			{
+				output = ft_strdup(line);
+				free(line);
+				return (output);
+			}
+			printf("read_size = %d\n", read_size);
+			printf("%s\n", line);
+			return (NULL);
+		}
+		buf[read_size] = '\0';
+		line = join_and_free(&line, buf);
+		if (!line)
+			return (NULL);
+	}
+	printf("%s\n", line);
 	output = process_output(&line);
 	return (output);
 }
-
-// int main(){
-// 	char line[] = "abc\n123";
-// 	char *input = ft_strdup(line);
-// 	char *tmp = process_output(&input);
-// }
 
 int main()
 {
@@ -110,7 +116,5 @@ int main()
 		free(str);
 		printf("---------------------------\n");
 	}
-	// printf("%s\n", str); 
-	// free(str);
 	close (fd);
 }
