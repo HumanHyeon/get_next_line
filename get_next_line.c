@@ -73,7 +73,7 @@ char		*get_next_line(int fd)
 	}
 	while (ft_strchr(line, '\n') == NULL)
 	{
-		printf("line : %s\n", line);
+		//printf("line : %s\n", line);
 		read_size = read(fd ,buf ,BUFFER_SIZE);
 		if (read_size == -1)
 			return (NULL);
@@ -95,7 +95,7 @@ char		*get_next_line(int fd)
 	}
 	//printf("%s\n", line);
 	output = process_output(&line);
-	printf("output :%s\n", output);
+	//printf("output :%s\n", output);
 	return (output);
 }
 
@@ -104,20 +104,24 @@ int main()
 	int fd;
 	char *str;
 
-	fd = open("./test.txt", O_RDONLY);
-	if (fd < 0)
-	{
-		printf("fd ERROR\n");
-		return (0);
-	}
-	while ((str = get_next_line(fd)))
-	{
-		printf("---------------------------\n");
-		printf("main : $%s$\n", str);
-		free(str);
-		printf("---------------------------\n");
-		printf("진입\n");		
-	}
-	system("leaks a.out");
+	//for (int i = 0; i < 10; i++)
+	//{
+		fd = open("./test2.txt", O_RDONLY);
+		if (fd < 0)
+		{
+			printf("fd ERROR\n");
+			return (0);
+		}
+		while ((str = get_next_line(fd)))
+		{
+			printf("---------------------------\n");
+			printf("main : $%s$\n", str);
+			free(str);
+			printf("---------------------------\n");
+			//printf("진입\n");		
+		}
+		system("leaks a.out");	
+	//}
+	//system("leaks a.out");
 	close (fd);
 }
